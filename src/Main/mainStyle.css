@@ -1,16 +1,18 @@
 .bufl {
-  width: 60px;
-  color: #3182f6;
+  color: #3182F6;
+  font-weight: bolder;
+  font-size: xx-large;
   position: relative;
-  top: 15px;
   left: 20px;
+  top: 10px;
 }
 
 .bell {
-  height: 35px;
   position: relative;
-  top: 10px;
-  left: 290px;
+  left: 350px;
+  bottom: 10px;
+  height: 40px;
+  margin-top: -40px;
 }
 
 .money {
@@ -22,8 +24,8 @@
 }
 
 .bank-icon {
-  margin: 20px;
-  margin-top: 30px;
+  margin: 30px;
+  margin-top: 10px;
 }
 
 .bank-icon1 {
@@ -82,33 +84,33 @@
   left: 20px;
 }
 
-.month_ {
-  margin-left: 20px;
+.month {
   border: 1px;
-  background-color: white;
-  width: 360px;
-  height: 60px;
+  background-color: rgba(211, 211, 211, 0.233);
+  margin: 20px;
   border-radius: 12px;
-  display: flex;
-  justify-content: space-around;
-  align-self: center;
-  line-height: 60px;
 }
 
-.month1_ {
+.month1 {
   color: gray;
   font-size: large;
+  position: relative;
+  left: 30px;
+  top: 10px;
 }
 
-.month2_ {
+.month2 {
   color: rgba(68, 68, 68, 0.959);
   font-weight: bolder;
   font-size: large;
+  position: relative;
+  left: 160px;
+  bottom: 15px;
 }
 
 .asset-box {
   border: 1px;
-  background-color: white;
+  background-color: rgba(211, 211, 211, 0.233);
   margin: 20px;
   height: 180px;
   border-radius: 12px;
@@ -169,4 +171,84 @@
   position: relative;
   bottom: 200px;
   left: 190px;
+}
+
+.bottom {
+  border: 1px;
+  background-color: rgba(211, 211, 211, 0.499);
+  position: relative;
+  top: 270px;
+  height: 65px;
+}
+
+.home-text {
+  position: relative;
+  top: 25px;
+  left: 50px;
+}
+
+.target-text {
+  color: rgba(182, 183, 184, 0.786);
+  position: relative;
+  top: 4px;
+  left: 150px;
+}
+
+.menu-text {
+  color: rgba(182, 183, 184, 0.786);
+  position: relative;
+  bottom: 19px;
+  left: 320px;
+}
+
+.account {
+  border: 1px;
+  background-color: rgba(211, 211, 211, 0.233);
+  margin: 20px;
+  border-radius: 12px;
+  position: relative;
+  top: 20px;
+}
+
+.account1 {
+  height: 430px;
+  position: relative;
+  left: 20px;
+}
+
+.account2 {
+  position: relative;
+  left: 339px;
+  bottom: 430px;
+}
+
+.group1 {
+  height: 230px;
+  position: relative;
+  bottom: 40px;
+  left: 50px;
+}
+
+.pay {
+  position: relative;
+  top: 150px;
+  left: 130px;
+}
+
+.pay1 {
+  position: relative;
+  left: 130px;
+  bottom: 20px;
+}
+
+.pay2 {
+  position: relative;
+  top: 180px;
+  left: 30px;
+}
+
+.pay3 {
+  position: relative;
+  top: 200px;
+  left: 30px;
 }

@@ -1,14 +1,3 @@
-export interface CategoryProps {
-  idx: number;
-  total: number;
-  category: string;
-  ratio: number;
-  amount: number;
-  isOrigin?: boolean;
-  updateRatio: (idx: number, newRatio: number) => void;
-  clickForDelete: (idx: number) => void;
-}
-
 export interface CategoryInterface {
   id: number;
   name: string;

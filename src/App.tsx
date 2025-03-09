@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import First from "./Main/1-first/first";
+import First from "./Main/first";
+
 import MoneySplitFirst from "./MoneySplit/SplitFirst";
 
 import AI_home from "./MoneySplit/pages/ai_pages/ai_home";
@@ -15,18 +16,9 @@ import TossAuth from "./MoneySplit/pages/final_process/TossAuth";
 import InputPin from "./MoneySplit/pages/final_process/InputPin";
 import SplitLoading from "./MoneySplit/pages/final_process/SplitLoading";
 
-import DoughnutChart from "./Main/1-first/DoughnutChart";
-import Account from "./Main/1-first/account";
-import AccountSelector from "./Main/3-second/AccountSelector";
-import AccountSelector1 from "./Main/3-second/AccountSelector1";
-import Second from "./Main/3-second/second";
-import Pig from "./Main/4-pig/pig";
-import Loading from "./Main/5-loading/loading";
-import List from "./Main/6-list/list";
-import Choose from "./Main/7-choose/choose";
-import Choice from "./Main/8-choice/choice";
-import Rocket from "./Main/9-rocket/rocket";
-import Start from "./Main/10-start/start";
+import Second from "./Main/second";
+import Box1 from "./Main/box1";
+import Box2 from "./Main/box2";
 
 import StartPage from "./SignOn/pages/StartPage";
 import PersonalInfoPage from "./SignOn/pages/PersonalInfoPage";
@@ -42,22 +34,17 @@ import SelectAccountDetail from "./MoneySplit/pages/control_accounts/SelectAccou
 import SelectAccountAccounts from "./MoneySplit/pages/control_accounts/SelectAccountAccounts";
 import TossTerms from "./MoneySplit/pages/final_process/TossTerms";
 import AI_Cancel from "./MoneySplit/pages/ai_pages/ai_cancel";
-import Setting from "./Main/settingPage/Setting";
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div
-        style={{
-          width: "400px",
-          height: "800px",
-          backgroundColor: "white",
-          borderRadius: "15px",
-        }}
-      >
+      <div style={{ width: "400px", height: "800px", backgroundColor: "white", borderRadius: "15px" }}>
         <Routes>
           <Route path="/" element={<First />} />
           <Route path="/Main" element={<First />} />
+          <Route path="/Main/Second" element={<Second />} />
+          <Route path="/Main/box1" element={<Box1 />} />
+          <Route path="/Main/box2" element={<Box2 />} />
           <Route path="/money-split" element={<MoneySplitFirst />} />
 
           <Route path="/money-split/ai" element={<AI_home />} />
@@ -77,18 +64,8 @@ const App: React.FC = () => {
           <Route path="/money-split/add-category" element={<AddCategory />} />
           <Route path="/money-split/toss/terms" element={<TossTerms />} />
           <Route path="/money-split/ai/cancel" element={<AI_Cancel />} />
-          <Route path="/setting" element={<Setting />} />
+
           <Route path="/Second" element={<Second />} />
-          <Route path="/Main/AccountSelector" element={<AccountSelector />} />
-          <Route path="/Main/AccountSelector1" element={<AccountSelector1 />} />
-          <Route path="/Main/pig" element={<Pig />} />
-          <Route path="/Main/loading" element={<Loading />} />
-          <Route path="/Main/choose" element={<Choose />} />
-          <Route path="/Main/list" element={<List />} />
-          <Route path="/Main/choice" element={<Choice />} />
-          <Route path="/Main/rocket" element={<Rocket />} />
-          <Route path="/Main/start" element={<Start />} />
-          {/* <Route path="/Main/DoughnutChart1" element={<Doughnut1 />} /> */}
 
           <Route path="/sign" element={<StartPage />} />
           <Route path="/sign/personal-info" element={<PersonalInfoPage />} />
@@ -96,7 +73,7 @@ const App: React.FC = () => {
           <Route path="/sign/salary-info" element={<SalaryInfoPage />} />
           <Route path="/sign/interest" element={<InterestPage />} />
           <Route path="/sign/completion" element={<CompletionPage />} />
-          <Route path="/sign/input-pin" element={<InputPinPage />} />
+          <Route path="/sign/input-pin" element={<InputPinPage />}/>
         </Routes>
       </div>
     </Router>

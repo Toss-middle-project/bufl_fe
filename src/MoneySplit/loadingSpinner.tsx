@@ -4,7 +4,7 @@ import "./style/splitStyle.css"; // CSS 파일 import
 import { useNavigate } from "react-router-dom";
 
 interface LoadingSpinnerProps {
-  text?: string;
+  text: string;
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ text }) => {
@@ -23,7 +23,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ text }) => {
   }, [navigate]);
 
   return (
-    <div className="loader-container" style={{ height: "800px" }}>
+    <div className="loader-container">
       <motion.div
         className="loader"
         animate={{ rotate: 360 }} // 부모 요소를 회전시킴
@@ -61,12 +61,6 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ text }) => {
             월급 쪼개기 AI 추천 비율을
             <br />
             계산 중이에요.
-          </>
-        ) : text === "recommend" ? (
-          <>
-            새 추천 목록
-            <br />
-            로딩 중
           </>
         ) : (
           <>

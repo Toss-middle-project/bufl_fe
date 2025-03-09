@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../../style/splitStyle.css";
 import { useNavigate } from "react-router-dom";
 import MoveBack from "../../MoveBack";
@@ -12,17 +12,6 @@ const AI_calculate: React.FC = () => {
   const clickForNo = () => {
     navigate("/money-split/select-ratio");
   };
-
-  const [total, setTotal] = useState<number>(12345);
-  useEffect(() => {
-    fetch("http://localhost:5000/api/users/salary")
-      .then((response) => response.json())
-      .then((data) => {
-        setTotal(Number(data.amount));
-        console.log(total);
-      })
-      .catch((error) => console.error("SelectRatio error:", error));
-  }, []);
   return (
     <div>
       <MoveBack pageBefore={"/money-split/ai/analysis"} />
@@ -34,7 +23,7 @@ const AI_calculate: React.FC = () => {
             월급 분배 비율이에요!
           </div>
           <div className="content_box">
-            <div className="black_title">월급 {total.toLocaleString()}원에서</div>
+            <div className="black_title">월급 2,000,000원에서</div>
             <div>
               <ul className="analysis_list">
                 <li>

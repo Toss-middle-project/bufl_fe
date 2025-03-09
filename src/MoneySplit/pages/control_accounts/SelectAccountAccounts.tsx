@@ -5,7 +5,7 @@ import MoveBack from "../../MoveBack";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedAccount } from "../../../redux/actions/accountAction";
 import { RootState } from "../../../redux/store";
-import { AccountsInterface, SelectedAccountInterface } from "../interfaces";
+import { AccountsInterface, SelectedAccountInterface } from "./interfaces";
 
 const SelectAccountAccounts: React.FC = () => {
   // const allAccountList = ["토스뱅크 123", "토스뱅크 456", "토스뱅크 789", "토스뱅크 000"];

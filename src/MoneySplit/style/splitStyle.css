@@ -8,7 +8,7 @@
   background-color: #007bff;
   color: white;
   border: none;
-  width: 320px;
+  width: 300px;
   height: 70px;
   text-align: center;
   text-decoration: none;
@@ -74,14 +74,14 @@
   background-color: #dceaff;
   color: black;
   border: none;
-  width: 320px;
+  width: 300px;
   height: 70px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
   font-weight: bold;
-  margin: 10px 2px;
+  margin: 4px 2px;
   cursor: pointer;
   display: block;
   border-radius: 12px;
@@ -96,7 +96,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 100vh;
 }
 
 .loader {
@@ -500,10 +500,4 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .wrong:valid {
   background-color: rgb(246, 66, 66);
-}
-
-.gray_small_btn.no,
-.gray_big_btn.no {
-  background-color: rgb(205, 205, 205);
-  font-weight: bold;
 }

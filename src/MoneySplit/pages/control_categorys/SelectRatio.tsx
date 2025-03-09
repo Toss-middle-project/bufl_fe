@@ -5,7 +5,27 @@ import MoveBack from "../../MoveBack";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategories } from "../../../redux/actions/categoryAction";
 import { RootState } from "../../../redux/store";
-import { CategoryProps } from "../interfaces";
+
+interface CategoryProps {
+  idx: number;
+  total: number;
+  category: string;
+  ratio: number;
+  amount: number;
+  isOrigin?: boolean;
+  updateRatio: (idx: number, newRatio: number) => void;
+  clickForDelete: (idx: number) => void;
+}
+
+interface CategoryInterface {
+  name: string;
+  goal_amount: number;
+  background_color: string;
+  ratio: number;
+  amount: number;
+  bank_name: string;
+  account_number: number;
+}
 
 const Category: React.FC<CategoryProps> = (props) => {
   const { idx, total, category, ratio, isOrigin, updateRatio, clickForDelete } = props;
@@ -67,21 +87,8 @@ const SelectRatio: React.FC = () => {
   const dispatch = useDispatch();
   const categoryList = useSelector((state: RootState) => state.category.categoryList);
   const navigate = useNavigate();
-  const [is100percent, setIs100percent] = useState<boolean>(false);
-  const [isTooBig, setIsTooBig] = useState<boolean>(false);
-  const [isTooSmall, setIsTooSmall] = useState<boolean>(true);
 
-  const [total, setTotal] = useState<number>(12345);
-  useEffect(() => {
-    fetch("http://localhost:5000/api/users/salary")
-      .then((response) => response.json())
-      .then((data) => {
-        setTotal(Number(data.amount));
-        console.log(total);
-      })
-      .catch((error) => console.error("SelectRatio error:", error));
-  }, []);
-
+  const total: number = 3000000;
   const [ratios, setRatios] = useState<number[]>([]);
 
   useEffect(() => {
@@ -94,11 +101,10 @@ const SelectRatio: React.FC = () => {
   }, []);
 
   // 하위 카테고리들의 ratio 합을 계산
-  const subCategoryTotal: number = Object.values(ratios)
+  const subCategoryTotal = Object.values(ratios)
     .filter((_, index) => index >= 1)
     .reduce((acc, cur) => acc + cur, 0);
   const salaryAccountRatio = 100 - subCategoryTotal; // 월급 통장 비율 자동 조정
-
   useEffect(() => {
     if (categoryList.length > 0) {
       const updatedCategoryList = categoryList.map((category, index) =>
@@ -109,39 +115,10 @@ const SelectRatio: React.FC = () => {
   }, [salaryAccountRatio]);
 
   const updateRatio = (idx: number, newRatio: number) => {
-    setRatios((prev: number[]) => {
-      const updatedRatios: number[] = { ...prev, [idx]: newRatio };
-      const subCategoryTotal = Object.values(updatedRatios)
-        .filter((_, index) => index >= 1)
-        .reduce((acc, cur) => acc + cur, 0);
-      const salaryAccountRatio = 100 - subCategoryTotal;
-
-      // 비율이 100%를 초과하면 기존 값 유지
-      if (subCategoryTotal === 100) {
-        console.log("100% 완성");
-        setIs100percent(true);
-        setIsTooBig(false);
-        setIsTooSmall(false);
-      }
-      if (subCategoryTotal < 100) {
-        console.log("100% 미만");
-        setIs100percent(false);
-        setIsTooBig(false);
-        setIsTooSmall(false);
-        if (subCategoryTotal < 50) {
-          setIsTooSmall(true);
-        }
-      }
-      if (subCategoryTotal > 100) {
-        setIs100percent(false);
-        setIsTooBig(true);
-        setIsTooSmall(false);
-        console.log("100% 초과");
-        // return prev; // 변경되지 않도록 이전 값 반환
-      }
+    setRatios((prev) => {
+      const updatedRatios = { ...prev, [idx]: newRatio };
       return updatedRatios;
     });
-
     let newCategoryList = categoryList.map((category, i) => (i === idx ? { ...category, ratio: newRatio } : category));
 
     dispatch(setCategories(newCategoryList));
@@ -192,11 +169,8 @@ const SelectRatio: React.FC = () => {
         <div>
           <div>
             <div className="black_title">월급 쪼개기 비율을 설정해주세요.</div>
-
-            <div style={{ margin: "10px 0" }}>
-              <div>월 소득</div>
-              <div style={{ fontSize: "22px" }}>{total.toLocaleString()}원 중,</div>
-            </div>
+            <div>월 소득</div>
+            <div>{total.toLocaleString()}원 중,</div>
           </div>
           <div style={{ height: "500px", overflowY: "scroll" }}>
             <div>
@@ -211,15 +185,6 @@ const SelectRatio: React.FC = () => {
                 updateRatio={() => {}}
                 clickForDelete={clickForDelete}
               />
-              <div style={{ marginBottom: "5px" }}>
-                {is100percent && !isTooBig ? (
-                  <div>분배 완료!</div>
-                ) : isTooBig ? (
-                  <div style={{ color: "red" }}>비율의 총 합이 100%를 초과해요! ({-1 * salaryAccountRatio}% 초과)</div>
-                ) : (
-                  <div style={{ color: "blue" }}>비율의 총 합이 100%가 되도록 해주세요.</div>
-                )}
-              </div>
               {/* 하위 카테고리 */}
               {categoryList &&
                 categoryList.map((cate, index) =>
@@ -240,19 +205,10 @@ const SelectRatio: React.FC = () => {
           </div>
           <div className="center_wrapper">
             <div className="center_wrapper btn">
-              <button
-                className="gray_small_btn"
-                style={{ backgroundColor: "#DCEAFF" }}
-                type="button"
-                onClick={clickForNo}
-              >
+              <button className="gray_small_btn" type="button" onClick={clickForNo}>
                 카테고리 추가
               </button>
-              <button
-                className={isTooBig || isTooSmall ? "gray_small_btn no" : "blue_small_btn"}
-                type="button"
-                onClick={clickForYes}
-              >
+              <button className="blue_small_btn" type="button" onClick={clickForYes}>
                 완료했어요
               </button>
             </div>
