@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios, { AxiosError } from "axios";
 import "../style/style.css";
 import MoneyImg from "../images/money.png";
 import DateImg from "../images/date.png";
@@ -11,45 +12,67 @@ import { accountList } from "./data";
 function SalaryInfoPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [salary, setSalary] = useState(2500000);
-  const [payday, setPayday] = useState("20일");
+  const [salary, setSalary] = useState(() => Number(localStorage.getItem("salary")) || 2500000);
+  const [payday, setPayday] = useState(() => localStorage.getItem("payday") || "20일");
   const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // 월급 입력값 포맷팅
   const formatSalary = (value: number) => value.toLocaleString();
 
+  // 월급 입력 핸들러
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target;
-    const rawValue = input.value.replace(/\D/g, "");
-    const newValue = rawValue ? Number(rawValue) : 0;
-
-    setSalary(newValue);
+    const rawValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력받음
+    setSalary(rawValue ? Number(rawValue) : 0);
   };
 
+  // 월급 기본값 유지
   const handleBlur = () => {
     if (!salary) {
       setSalary(2500000);
     }
   };
 
+  // + / - 버튼 조작
   const adjustSalary = (amount: number) => {
     setSalary((prevSalary) => Math.max(0, prevSalary + amount));
   };
 
+  // 월급일 옵션 리스트
   const paydayOptions = Array.from({ length: 31 }, (_, i) => `${i + 1}일`).concat("말일");
 
+  // 다음 월급일 계산 (월급일 + 1일)
   const getNextDay = (day: string) => {
     if (day === "말일") return "1일";
-
     const dayNumber = parseInt(day.replace("일", ""), 10);
-    if (isNaN(dayNumber)) return "1일";
+    return isNaN(dayNumber) || dayNumber >= 28 ? "1일" : `${dayNumber + 1}일`;
+  };
 
-    if (dayNumber >= 28) {
-      return "1일";
+  // 월급 정보 서버 저장
+  const submitSalaryInfo = async () => {
+    if (!selectedAccount) {
+      alert("월급 계좌를 선택하세요!");
+      return;
     }
 
-    return `${dayNumber + 1}일`;
+    try {
+      await axios.post(
+        "http://localhost:5000/api/users/salary",
+        {
+          amount: salary,
+          payDate: payday,
+          accountId: selectedAccount,
+        },
+        { withCredentials: true }
+      );
+
+      navigate("/sign/interest"); // 다음 페이지로 이동
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      alert("월급 정보를 저장하는 데 실패했습니다.");
+      console.error("월급 정보 저장 실패:", axiosError.response ? axiosError.response.data : axiosError.message);
+    }
   };
 
   return (
@@ -89,7 +112,13 @@ function SalaryInfoPage() {
           </div>
 
           <div className="center_wrap">
-            <button className="btn_start" onClick={() => setStep(2)}>
+            <button
+              className="btn_start"
+              onClick={() => {
+                localStorage.setItem("salary", salary.toString());
+                setStep(2);
+              }}
+            >
               다음
             </button>
           </div>
@@ -115,6 +144,7 @@ function SalaryInfoPage() {
                     className="payday__dropdown-item"
                     onClick={() => {
                       setPayday(day);
+                      localStorage.setItem("payday", day);
                       setIsDropdownOpen(false);
                     }}
                   >
@@ -161,10 +191,10 @@ function SalaryInfoPage() {
           <div className="center_wrap">
             <button
               className={`btn_start ${selectedAccount === null ? "disabled" : ""}`}
-              onClick={() => navigate("/sign/interest")}
+              onClick={submitSalaryInfo}
               disabled={selectedAccount === null}
             >
-              다음
+              저장 후 다음
             </button>
           </div>
         </div>
