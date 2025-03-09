@@ -42,7 +42,7 @@ const InputPinPage: React.FC = () => {
         setStep("confirm"); // 확인 단계로 변경
       } else if (step === "confirm") {
         if (firstPin === pin.join("")) {
-          updatePassword(firstPin); // ✅ PIN이 일치하면 비밀번호 업데이트
+          updatePassword(firstPin); // PIN이 일치하면 비밀번호 업데이트
         } else {
           setErrorMessage("PIN 번호가 일치하지 않습니다. 다시 입력해주세요.");
           setPin(Array(6).fill("")); // 입력 초기화
@@ -51,7 +51,7 @@ const InputPinPage: React.FC = () => {
     }
   }, [pin]);
 
-  // ✅ 비밀번호 업데이트 요청
+ 
   const updatePassword = async (newPassword: string) => {
     setErrorMessage(null);
     const userPhone = localStorage.getItem("userPhone"); // 회원가입 시 저장된 휴대폰 번호 가져오기
@@ -65,15 +65,15 @@ const InputPinPage: React.FC = () => {
       const response = await axios.put(
         "http://localhost:5000/api/users/update-password",
         {
-          userPhone, // ✅ 휴대폰 번호로 사용자 찾기
-          userPassword: newPassword, // ✅ 새 비밀번호(PIN)
+          userPhone, 
+          userPassword: newPassword, 
         },
         { withCredentials: true }
       );
 
       if (response.status === 200) {
         alert("PIN 설정 완료!");
-        navigate("/sign/salary-info"); // ✅ 다음 단계로 이동
+        navigate("/sign/salary-info"); // 
       }
     } catch (error: any) {
       console.error("비밀번호 업데이트 오류:", error);

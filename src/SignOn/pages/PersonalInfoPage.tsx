@@ -28,7 +28,7 @@ const PersonalInfoPage: React.FC = () => {
     setLocalName(name);
   }, [name]);
 
-  // 🔹 숫자 입력 방지 + 한글 & 영문만 입력 허용
+  // 숫자 입력 방지 + 한글 & 영문만 입력 허용
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (isComposing) {
@@ -40,7 +40,7 @@ const PersonalInfoPage: React.FC = () => {
     dispatch(setName(filteredValue));
   };
 
-  // 🔹 포커스 아웃 시 Redux에 최종 반영
+  // 포커스 아웃 시 Redux에 최종 반영
   const handleBlur = () => {
     dispatch(setName(localName));
   };
@@ -92,7 +92,7 @@ const PersonalInfoPage: React.FC = () => {
     agreements.terms &&
     agreements.privacy;
 
-  // ✅ 🔗 백엔드 회원가입 요청 함수
+  // 백엔드 회원가입 요청 함수
   const handleSubmit = async () => {
     setErrorMessage(""); // 오류 메시지 초기화
 
@@ -109,9 +109,9 @@ const PersonalInfoPage: React.FC = () => {
       );
 
       if (response.status === 201) {
-        localStorage.setItem("userPhone", phone); // ✅ userPhone을 localStorage에 저장
+        localStorage.setItem("userPhone", phone); 
         alert("회원가입 성공! PIN 번호를 설정해주세요.");
-        navigate("/sign/input-pin"); // ✅ PIN 설정 페이지로 이동
+        navigate("/sign/input-pin"); 
       }
     } catch (error: any) {
       console.error("회원가입 오류:", error);
