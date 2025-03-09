@@ -7,7 +7,7 @@ import MoveBack from "../../MoneySplit/MoveBack";
 const InputPinPage: React.FC = () => {
   const [pin, setPin] = useState<string[]>(Array(6).fill(""));
   const [firstPin, setFirstPin] = useState<string | null>(null);
-  const [step, setStep] = useState<"set" | "confirm">("set"); // PIN 설정 단계
+  const [step, setStep] = useState<"set" | "confirm">("set"); 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -33,19 +33,19 @@ const InputPinPage: React.FC = () => {
     });
   };
 
-  // PIN이 완성될 때 처리
+
   useEffect(() => {
     if (pin.every((p) => p !== "")) {
       if (step === "set") {
-        setFirstPin(pin.join("")); // 첫 번째 입력 저장
-        setPin(Array(6).fill("")); // 입력 초기화
-        setStep("confirm"); // 확인 단계로 변경
+        setFirstPin(pin.join("")); 
+        setPin(Array(6).fill("")); 
+        setStep("confirm"); 
       } else if (step === "confirm") {
         if (firstPin === pin.join("")) {
-          updatePassword(firstPin); // PIN이 일치하면 비밀번호 업데이트
+          updatePassword(firstPin); 
         } else {
           setErrorMessage("PIN 번호가 일치하지 않습니다. 다시 입력해주세요.");
-          setPin(Array(6).fill("")); // 입력 초기화
+          setPin(Array(6).fill("")); 
         }
       }
     }
@@ -54,7 +54,7 @@ const InputPinPage: React.FC = () => {
  
   const updatePassword = async (newPassword: string) => {
     setErrorMessage(null);
-    const userPhone = localStorage.getItem("userPhone"); // 회원가입 시 저장된 휴대폰 번호 가져오기
+    const userPhone = localStorage.getItem("userPhone"); 
 
     if (!userPhone) {
       setErrorMessage("회원가입 정보를 찾을 수 없습니다.");
@@ -73,7 +73,7 @@ const InputPinPage: React.FC = () => {
 
       if (response.status === 200) {
         alert("PIN 설정 완료!");
-        navigate("/sign/salary-info"); // 
+        navigate("/sign/salary-info"); 
       }
     } catch (error: any) {
       console.error("비밀번호 업데이트 오류:", error);

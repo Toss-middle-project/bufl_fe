@@ -29,14 +29,14 @@ function SalaryInfoPage() {
   >([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // DB에서 계좌 목록 가져오기
+
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/accounts", {
-          withCredentials: true, // 세션 기반 인증 지원
+          withCredentials: true, 
         });
-        setAccountList(response.data.accounts); // API 응답 데이터로 계좌 목록 설정
+        setAccountList(response.data.accounts);
       } catch (error) {
         console.error("계좌 정보를 불러오는 데 실패했습니다:", error);
       }
@@ -45,39 +45,39 @@ function SalaryInfoPage() {
     fetchAccounts();
   }, []);
 
-  // 월급 입력값 포맷팅
+
   const formatSalary = (value: number) => value.toLocaleString();
 
-  // 월급 입력 핸들러
+
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력받음
+    const rawValue = e.target.value.replace(/\D/g, ""); 
     setSalary(rawValue ? Number(rawValue) : 0);
   };
 
-  // 월급 기본값 유지
+
   const handleBlur = () => {
     if (!salary) setSalary(2500000);
   };
 
-  // + / - 버튼 조작
+
   const adjustSalary = (amount: number) => {
     setSalary((prevSalary) => Math.max(0, prevSalary + amount));
   };
 
-  // 월급일 옵션 리스트
+
   const paydayOptions = Array.from(
     { length: 31 },
     (_, i) => `${i + 1}일`
   ).concat("말일");
 
-  // 다음 월급일 계산 (월급일 + 1일)
+
   const getNextDay = (day: string) => {
     if (day === "말일") return "1일";
     const dayNumber = parseInt(day.replace("일", ""), 10);
     return isNaN(dayNumber) || dayNumber >= 28 ? "1일" : `${dayNumber + 1}일`;
   };
 
-  // 월급 정보 서버 저장
+
   const submitSalaryInfo = async () => {
     if (!selectedAccount) {
       alert("월급 계좌를 선택하세요!");
@@ -90,12 +90,12 @@ function SalaryInfoPage() {
         {
           amount: salary,
           payDate: payday,
-          accountId: selectedAccount, // 선택한 계좌의 account_id 전송
+          accountId: selectedAccount, 
         },
         { withCredentials: true }
       );
 
-      navigate("/sign/interest"); // 다음 페이지로 이동
+      navigate("/sign/interest"); 
     } catch (error) {
       const axiosError = error as AxiosError;
       alert("월급 정보를 저장하는 데 실패했습니다.");

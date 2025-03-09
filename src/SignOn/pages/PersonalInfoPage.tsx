@@ -22,13 +22,12 @@ const PersonalInfoPage: React.FC = () => {
 
   const [localName, setLocalName] = useState(name);
   const [isComposing, setIsComposing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 상태 추가
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   useEffect(() => {
     setLocalName(name);
   }, [name]);
 
-  // 숫자 입력 방지 + 한글 & 영문만 입력 허용
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (isComposing) {
@@ -40,7 +39,6 @@ const PersonalInfoPage: React.FC = () => {
     dispatch(setName(filteredValue));
   };
 
-  // 포커스 아웃 시 Redux에 최종 반영
   const handleBlur = () => {
     dispatch(setName(localName));
   };
