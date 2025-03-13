@@ -125,8 +125,8 @@
 }
 
 .gray_small_btn {
-  background-color: #ccc;
-  color: white;
+  background-color: #f3f3f3;
+  color: black;
   border: none;
   width: 173px;
   height: 64px;
@@ -134,12 +134,11 @@
   text-decoration: none;
   display: inline-block;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 500;
   margin: 4px 2px;
   cursor: pointer;
   display: block;
   border-radius: 12px;
-
 }
 .blue_small_btn {
   background-color: #007bff;
@@ -445,7 +444,11 @@
   -webkit-appearance: none;
   width: 250px;
   height: 8px;
-  background: linear-gradient(to right, rgb(200, 200, 200) 0%, rgb(200, 200, 200) 100%);
+  background: linear-gradient(
+    to right,
+    rgb(200, 200, 200) 0%,
+    rgb(200, 200, 200) 100%
+  );
   border-radius: 8px;
   outline: none;
   transition: background 450ms ease-in;
@@ -466,7 +469,11 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 250px;
   height: 8px;
-  background: linear-gradient(to right, rgb(28, 106, 216) 0%, rgb(28, 106, 216) 100%);
+  background: linear-gradient(
+    to right,
+    rgb(28, 106, 216) 0%,
+    rgb(28, 106, 216) 100%
+  );
   border-radius: 8px;
   outline: none;
   transition: background 450ms ease-in;
