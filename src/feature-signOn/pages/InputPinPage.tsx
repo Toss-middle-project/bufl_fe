@@ -4,6 +4,7 @@ import axios from "axios";
 import "../../feature-moneySplit/style/splitStyle.css";
 import MoveBack from "../../shared/MoveBack";
 import "../style/style.css";
+
 const InputPinPage: React.FC = () => {
   const [pin, setPin] = useState<string[]>(Array(6).fill(""));
   const [firstPin, setFirstPin] = useState<string | null>(null);
@@ -12,6 +13,7 @@ const InputPinPage: React.FC = () => {
   const [isWrong, setIsWrong] = useState(false);
   const navigate = useNavigate();
 
+  // 숫자 입력 핸들러
   const handleKeyPress = (num: string) => {
     setPin((prev) => {
       const newPin = [...prev];
@@ -21,6 +23,7 @@ const InputPinPage: React.FC = () => {
     });
   };
 
+  // 숫자 삭제 핸들러
   const handleDelete = () => {
     setPin((prev) => {
       const newPin = [...prev];
@@ -56,6 +59,7 @@ const InputPinPage: React.FC = () => {
     }
   }, [pin]);
 
+  // 비밀번호 업데이트 API 호출
   const updatePassword = async (newPassword: string) => {
     setErrorMessage(null);
     const userPhone = localStorage.getItem("userPhone");
@@ -89,6 +93,7 @@ const InputPinPage: React.FC = () => {
       <MoveBack pageBefore="/sign/personal-info" />
       <div className="center_wrap">
         <div className="pin-input--relative">
+          {/* 단계에 따라 메시지 변경 */}
           <div className="black_title center_text">
             {step === "set" ? (
               <>
@@ -105,22 +110,37 @@ const InputPinPage: React.FC = () => {
             )}
           </div>
 
+          {/* 오류 메시지 출력 */}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
+          {/* PIN 입력 UI */}
           <div className={`pin-input-container ${isWrong ? "shake" : ""}`}>
             {pin.map((num, index) => (
-              <div key={index} className={`pin-dot ${num ? (isWrong ? "wrong" : "filled") : ""}`}></div>
+              <div
+                key={index}
+                className={`pin-dot ${
+                  num ? (isWrong ? "wrong" : "filled") : ""
+                }`}
+              ></div>
             ))}
           </div>
 
+          {/* 키패드 UI */}
           <div className="keypad">
             {[...Array(9)].map((_, index) => (
-              <button key={index + 1} className="keypad-button" onClick={() => handleKeyPress((index + 1).toString())}>
+              <button
+                key={index + 1}
+                className="keypad-button"
+                onClick={() => handleKeyPress((index + 1).toString())}
+              >
                 {index + 1}
               </button>
             ))}
             <div></div>
-            <button className="keypad-button" onClick={() => handleKeyPress("0")}>
+            <button
+              className="keypad-button"
+              onClick={() => handleKeyPress("0")}
+            >
               0
             </button>
             <button className="keypad-button" onClick={handleDelete}>

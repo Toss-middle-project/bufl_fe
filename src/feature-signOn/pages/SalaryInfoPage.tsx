@@ -10,11 +10,27 @@ import MoveBack from "../../shared/MoveBack";
 
 function SalaryInfoPage() {
   const navigate = useNavigate();
+
+  // 페이지 단계(1: 월급 입력, 2: 월급일 선택, 3: 계좌 선택)
   const [step, setStep] = useState(1);
-  const [salary, setSalary] = useState(() => Number(localStorage.getItem("salary")) || 2500000);
-  const [payday, setPayday] = useState(() => localStorage.getItem("payday") || "20일");
+
+  // 월급 입력 값 (로컬 스토리지에서 불러오거나 기본값 2500000)
+  const [salary, setSalary] = useState(
+    () => Number(localStorage.getItem("salary")) || 2500000
+  );
+
+  // 월급일 (로컬 스토리지에서 불러오거나 기본값 "20일")
+  const [payday, setPayday] = useState(
+    () => localStorage.getItem("payday") || "20일"
+  );
+
+  // 선택한 계좌 ID 저장
   const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
+
+  // 월급일 드롭다운 열림 여부
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // 계좌 목록 데이터
   const [accountList, setAccountList] = useState<
     {
       account_id: number;
@@ -23,14 +39,20 @@ function SalaryInfoPage() {
       logo: string;
     }[]
   >([]);
+
+  // 입력 필드 참조 (포커스 제어)
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // API 호출하여 계좌 목록 가져오기
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const response = await axios.get("https://buflbe.vercel.app/api/accounts", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "https://buflbe.vercel.app/api/accounts",
+          {
+            withCredentials: true,
+          }
+        );
         setAccountList(response.data.accounts);
       } catch (error) {
         console.error("계좌 정보를 불러오는 데 실패했습니다:", error);
@@ -40,29 +62,39 @@ function SalaryInfoPage() {
     fetchAccounts();
   }, []);
 
+  // 숫자를 세 자리마다 쉼표(,)로 포맷
   const formatSalary = (value: number) => value.toLocaleString();
 
+  // 월급 입력 핸들러 (숫자만 허용)
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/\D/g, "");
+    const rawValue = e.target.value.replace(/\D/g, ""); // 숫자가 아닌 문자 제거
     setSalary(rawValue ? Number(rawValue) : 0);
   };
 
+  // 입력 필드 포커스 아웃 시 기본값 유지
   const handleBlur = () => {
     if (!salary) setSalary(2500000);
   };
 
+  // 월급 조정 (+50만 / -50만)
   const adjustSalary = (amount: number) => {
     setSalary((prevSalary) => Math.max(0, prevSalary + amount));
   };
 
-  const paydayOptions = Array.from({ length: 31 }, (_, i) => `${i + 1}일`).concat("말일");
+  // 월급일 옵션 (1일~31일 + 말일 추가)
+  const paydayOptions = Array.from(
+    { length: 31 },
+    (_, i) => `${i + 1}일`
+  ).concat("말일");
 
+  // 월급 지급일 다음 날 계산
   const getNextDay = (day: string) => {
     if (day === "말일") return "1일";
     const dayNumber = parseInt(day.replace("일", ""), 10);
     return isNaN(dayNumber) || dayNumber >= 28 ? "1일" : `${dayNumber + 1}일`;
   };
 
+  // 월급 정보 저장 API 호출
   const submitSalaryInfo = async () => {
     if (!selectedAccount) {
       return;
@@ -82,19 +114,25 @@ function SalaryInfoPage() {
       navigate("/sign/interest");
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error("월급 정보 저장 실패:", axiosError.response ? axiosError.response.data : axiosError.message);
+      console.error(
+        "월급 정보 저장 실패:",
+        axiosError.response ? axiosError.response.data : axiosError.message
+      );
     }
   };
 
   return (
     <div className="container">
+      {/* 이전 페이지 이동 버튼 */}
       <MoveBack pageBefore="/sign/input-pin" />
+
       <h3 className="salary_text1">
         월급 자동 분배를 위해
         <br />
         정보가 필요해요.
       </h3>
 
+      {/* Step 1: 월급 입력 */}
       {step === 1 ? (
         <div>
           <div className="salary_flex">
@@ -106,7 +144,10 @@ function SalaryInfoPage() {
           </div>
 
           <div className="salary_input_container">
-            <button className="salary_button" onClick={() => adjustSalary(500000)}>
+            <button
+              className="salary_button"
+              onClick={() => adjustSalary(500000)}
+            >
               +
             </button>
             <input
@@ -117,7 +158,10 @@ function SalaryInfoPage() {
               onBlur={handleBlur}
               className="salary_input"
             />
-            <button className="salary_button" onClick={() => adjustSalary(-500000)}>
+            <button
+              className="salary_button"
+              onClick={() => adjustSalary(-500000)}
+            >
               -
             </button>
             <span className="currency">원</span>
@@ -130,6 +174,7 @@ function SalaryInfoPage() {
           </div>
         </div>
       ) : step === 2 ? (
+        // Step 2: 월급일 선택
         <div>
           <div className="salary_flex">
             <img src={DateImg} alt="date" width="45px" />
@@ -137,7 +182,10 @@ function SalaryInfoPage() {
           </div>
 
           <div className="payday__container">
-            <div className="payday__select-wrapper" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <div
+              className="payday__select-wrapper"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
               <span className="payday__select-text">{payday}</span>
               <div className="payday__select--icon">▼</div>
             </div>
@@ -159,7 +207,9 @@ function SalaryInfoPage() {
               </div>
             )}
 
-            <p className="payday__description">매달 {getNextDay(payday)} 새벽에 월급 쪼개기를 진행할게요.</p>
+            <p className="payday__description">
+              매달 {getNextDay(payday)} 새벽에 월급 쪼개기를 진행할게요.
+            </p>
           </div>
 
           <div className="center_wrap">
@@ -169,6 +219,7 @@ function SalaryInfoPage() {
           </div>
         </div>
       ) : (
+        // Step 3: 월급 계좌 선택
         <div>
           <div className="salary_flex">
             <img src={AccountImg} alt="account" width="45px" />
@@ -179,10 +230,15 @@ function SalaryInfoPage() {
             {accountList.map((account) => (
               <button
                 key={account.account_id}
-                className={`account-item ${selectedAccount === account.account_id ? "selected" : ""}`}
+                className={`account-item ${
+                  selectedAccount === account.account_id ? "selected" : ""
+                }`}
                 onClick={() => setSelectedAccount(account.account_id)}
               >
-                <img src={require(`../../shared/shared-images/${account.logo}`)} alt={account.bank_name} />
+                <img
+                  src={require(`../../shared/shared-images/${account.logo}`)}
+                  alt={account.bank_name}
+                />
                 <span>
                   {account.bank_name} <strong>{account.account_number}</strong>
                 </span>
@@ -192,7 +248,9 @@ function SalaryInfoPage() {
 
           <div className="center_wrap">
             <button
-              className={`btn_start ${selectedAccount === null ? "disabled" : ""}`}
+              className={`btn_start ${
+                selectedAccount === null ? "disabled" : ""
+              }`}
               onClick={submitSalaryInfo}
               disabled={selectedAccount === null}
             >
